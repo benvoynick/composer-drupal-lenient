@@ -32,19 +32,19 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->io->write('activate()');
         $this->packageRequiresAdjuster = new PackageRequiresAdjuster($composer);
         $this->io = $io;
+        $this->io->write('activate()');
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
     {
-        $this->io->write('deactivate()');
+        $io->write('deactivate()');
     }
 
     public function uninstall(Composer $composer, IOInterface $io): void
     {
-        $this->io->write('uninstall()');
+        $io->write('uninstall()');
     }
 
     public static function getSubscribedEvents(): array
