@@ -49,7 +49,6 @@ final class Plugin implements PluginInterface, EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        $this->io->write('getSubscribedEvents()');
         return [
             PluginEvents::PRE_POOL_CREATE => 'modifyPackages',
         ];
