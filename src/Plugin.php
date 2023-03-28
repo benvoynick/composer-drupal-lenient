@@ -14,21 +14,26 @@ use Composer\Plugin\PrePoolCreateEvent;
 final class Plugin implements PluginInterface, EventSubscriberInterface
 {
     private PackageRequiresAdjuster $packageRequiresAdjuster;
+    private IOInterface $io;
 
     public function modifyPackages(PrePoolCreateEvent $event): void
     {
+        $this->io->write('modifyPackages() begins.');
         $packages = $event->getPackages();
         foreach ($packages as $package) {
             if ($this->packageRequiresAdjuster->applies($package)) {
                 $this->packageRequiresAdjuster->adjust($package);
+                $this->io->write('modifyPackages() adjusted ' . $package->getName());
             }
         }
         $event->setPackages($packages);
+        $this->io->write('modifyPackages() ends.');
     }
 
     public function activate(Composer $composer, IOInterface $io): void
     {
         $this->packageRequiresAdjuster = new PackageRequiresAdjuster($composer);
+        $this->io = $io;
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
